@@ -1,6 +1,4 @@
 ﻿using BookShelf.Repository;
-using System;
-using Xunit;
 
 namespace Bookshelf.Tests;
 
@@ -99,7 +97,7 @@ public class BooksRepositoryTests
         author = repository.GetAllAuthors().Last();
         Assert.Equal("Last Name5, First Name5 Middle Name5", author.FullName);
         Assert.Equal("First Name5", author.FirstName);
-        Assert.Equal("Middle Name5",author.MiddleName);
+        Assert.Equal("Middle Name5", author.MiddleName);
         Assert.Equal("Last Name5", author.LastName);
 
         repository.AddAuthor("First-Name6 Middle-Name6 Last-Name6");
@@ -138,7 +136,7 @@ public class BooksRepositoryTests
         Assert.Equal("Name", author.FirstName);
         Assert.Null(author.MiddleName);
         Assert.Equal("Surname", author.LastName);
-        Assert.Equal(repository.GetAllBooks().First().Author.First(), author); 
+        Assert.Equal(repository.GetAllBooks().First().Author.First(), author);
     }
 
     [Fact]
