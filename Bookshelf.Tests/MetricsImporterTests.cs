@@ -29,7 +29,7 @@ public class MetricsImporterTests
         Assert.Equal(@"Progress", importer.Headers[7]);
         Assert.Equal(@"Planowany progress w stronach", importer.Headers[8]);
         Assert.Equal("31 gru 23", importer.Headers[9]);
-        Assert.Equal("31 gru 24", importer.Headers[new Index(3, true)]);
+        Assert.Equal("31 gru 24", importer.Headers[new Index(1, true)]);
         Assert.NotNull(importer.Headers.FirstOrDefault("31 mar 24"));
         Assert.NotNull(importer.Headers.FirstOrDefault("29 lut 24"));
         Assert.NotNull(importer.Headers.FirstOrDefault("31 sie 24"));
@@ -40,4 +40,20 @@ public class MetricsImporterTests
         Assert.Null(importer.Headers.Find(item => item == "31 lis 24"));
     }
 
+    [Fact()]
+    public void ImportingReadsBooksAndAuthors()
+    {
+        string testFile = @$"{TEST_DATA_DIR}/Metryki-2024_1book.csv";
+        importer.LoadFile(testFile);
+        Assert.NotEmpty(importer.Headers);
+        Assert.Single(importer.Books);
+        Assert.Equal(2, importer.Authors.Count());
+        Book book = importer.Books.First();
+        Assert.NotNull(book);
+        Author author = importer.Authors.First();
+        Assert.Equal("Pami?? ?wiat?o?ci", book.Title);  // TODO: Polish characters
+        Assert.Equal("Jordan, Robert", book.Author.First().FullName);
+        Assert.Equal("Jordan, Robert", author.FullName);
+        Assert.Equal(1030, book.Pages);
+    }
 }

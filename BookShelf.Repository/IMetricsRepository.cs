@@ -6,5 +6,6 @@ internal interface IMetricsRepository
     void AddProgressUpdate(int bookId, DateTime entryDate, int currentPage);
     void AddProgressUpdate(int bookId, DateTime entryDate, int currentPage, int pageCount);
     IEnumerable<Book> GetAllBooks();
+    IEnumerable<Author> GetAllAuthors();
     ReadingProgress? GetProgress(int bookId);
 }
