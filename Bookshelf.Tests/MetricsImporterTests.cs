@@ -56,4 +56,40 @@ public class MetricsImporterTests
         Assert.Equal("Jordan, Robert", author.FullName);
         Assert.Equal(1030, book.Pages);
     }
+
+    [Fact]
+    public void ImportingReadsBooksAndAuthors_multipleEntries()
+    {
+        string testFile = @$"{TEST_DATA_DIR}/Metryki-2024.csv";
+        importer.LoadFile(testFile);
+        Assert.NotEmpty(importer.Headers);
+        Assert.Equal(50, importer.Books.Count());
+        Assert.Equal(44, importer.Authors.Count());
+        Book book = importer.Books.First();
+        Assert.NotNull(book);
+        Author author = importer.Authors.First();
+        Assert.Equal("Pami?? ?wiat?o?ci", book.Title);  // TODO: Polish characters
+        Assert.Equal("Jordan, Robert", book.Author.First().FullName);
+        Assert.Equal("Jordan, Robert", author.FullName);
+        Assert.Equal(1030, book.Pages);
+        book = importer.Books.Last();
+        Assert.NotNull(book);
+        author = importer.Authors.Last();
+        Assert.Equal("Solutions Architect's Handbook", book.Title);
+        Assert.Equal("Shrivastava, Saurabh", book.Author.First().FullName);
+        Assert.Equal("Shrivastav, Neelanjali", book.Author.Last().FullName);
+        Assert.Equal(590, book.Pages);
+    }
+
+    [Fact (Skip = "Work in progress")]
+    public void ImportingReadingProgressForOneBookMetricsFile()
+    {
+        string testFile = @$"{TEST_DATA_DIR}/Metryki-2024_1book.csv";
+        importer.LoadFile(testFile);
+        Assert.NotEmpty(importer.Headers);
+        Assert.Single(importer.Books);
+        Assert.Equal(2, importer.Authors.Count());
+        Book book = importer.Books.First();
+
+    }
 }

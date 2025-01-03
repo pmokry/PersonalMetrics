@@ -82,6 +82,10 @@ public class MetricsRepository : IMetricsRepository
         return _books;
     }
 
+    public IEnumerable<ReadingProgress> GetAllReadingProgress() {
+        return _progress;
+    }
+
     public ReadingProgress? GetProgress(int bookId)
     {
         return _progress.FirstOrDefault(p => p.Book.Id == bookId);

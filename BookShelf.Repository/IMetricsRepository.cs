@@ -8,4 +8,5 @@ internal interface IMetricsRepository
     IEnumerable<Book> GetAllBooks();
     IEnumerable<Author> GetAllAuthors();
     ReadingProgress? GetProgress(int bookId);
+    IEnumerable<ReadingProgress> GetAllReadingProgress();
 }

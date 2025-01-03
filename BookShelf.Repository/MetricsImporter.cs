@@ -1,5 +1,7 @@
 ﻿
 
+using System.Globalization;
+
 namespace BookShelf.Repository;
 
 public class MetricsImporter
@@ -18,6 +20,7 @@ public class MetricsImporter
 
     public IEnumerable<Book> Books => _temporaryRepository.GetAllBooks();
     public IEnumerable<Author> Authors => _temporaryRepository.GetAllAuthors();
+    public IEnumerable<ReadingProgress> Progress => _temporaryRepository.GetAllReadingProgress();
 
     public void LoadFile(string testFile)
     {
@@ -26,10 +29,14 @@ public class MetricsImporter
         int titleIndex = _headers.IndexOf(BOOK_TITLE_HEADER);
         int authorIndex = _headers.IndexOf(AUTHOR_HEADER);
         int pagesIndex = _headers.IndexOf(PAGES_HEADER);
+        int progressEntriesStart = _headers.FindIndex(x => DateOnly.TryParseExact(x, "dd MMM yy", new CultureInfo("pl-PL"), DateTimeStyles.None, out _));
         while (!metricsReader.EndOfStream)
         {
             string[] line = metricsReader.ReadLine()!.Split(';');
-            _temporaryRepository.AddBook(line[titleIndex].Trim(), line[authorIndex], int.Parse(line[pagesIndex]));
+            int pageCount;
+            if (!int.TryParse(line[pagesIndex], out pageCount))
+                pageCount = -1;
+            _temporaryRepository.AddBook(line[titleIndex].Trim(), line[authorIndex], pageCount);
             //.Split(',').ToList();
         }
     }
